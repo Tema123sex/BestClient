@@ -57,10 +57,10 @@ sed -i "s/org.ddnet.client/${APK_PACKAGE_NAME}/g" src/main/res/xml/shortcuts.xml
 sed -i "s/\"DDNet\"/\"${APK_BASENAME}\"/g" src/main/AndroidManifest.xml
 sed -i "s/org.ddnet.client/${APK_PACKAGE_NAME}/g" src/main/AndroidManifest.xml
 
-if [ "${APK_PACKAGE_FOLDER}" != "org/ddnet/client" ]; then
-	mv src/main/java/org/ddnet/client src/main/java/"${APK_PACKAGE_FOLDER}"
+if [ "${APK_PACKAGE_FOLDER}" != "org/ddnet/client" ] && [ -d "src/main/java/org/ddnet/client" ]; then
+    mkdir -p "src/main/java/${APK_PACKAGE_FOLDER}"
+    cp -r src/main/java/org/ddnet/client/* "src/main/java/${APK_PACKAGE_FOLDER}/" 2>/dev/null || true
 fi
-
 sed -i "s/org.ddnet.client/${APK_PACKAGE_NAME}/g" src/main/java/"${APK_PACKAGE_FOLDER}"/ClientActivity.java
 sed -i "s/org.ddnet.client/${APK_PACKAGE_NAME}/g" src/main/java/"${APK_PACKAGE_FOLDER}"/ServerService.java
 sed -i "s/org.ddnet.client/${APK_PACKAGE_NAME}/g" proguard-rules.pro
