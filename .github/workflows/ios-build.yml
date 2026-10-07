@@ -32,7 +32,7 @@ jobs:
 
       - name: Build BestClient for iOS
         run: |
-          ./scripts/ios/cmake_ios.sh device BestClient org.bestclient.app Release build-ios-client -DSTEAM=OFF -DEXTERNAL_STEAM_API_DYLIB=""
+          ./scripts/ios/cmake_ios.sh device BestClient org.bestclient.app Release build-ios-client -DSTEAM=OFF -DEXTERNAL_STEAM_API_DYLIB="" -DDISCORD=OFF
           echo "=== Ищем собранный .app ==="
           find build-ios-client -name "*.app" -type d
 
