@@ -23,8 +23,7 @@ jobs:
 
       - name: Build ddnet-libs for iOS
         run: |
-          chmod +x ./scripts/compile_libs/gen_libs.sh
-          chmod +x ./scripts/ios/cmake_ios.sh
+          chmod +x -R ./scripts/
           export M4="$(brew --prefix m4)/bin/m4"
           mkdir -p build-ios-libs
           ./scripts/compile_libs/gen_libs.sh build-ios-libs ios
