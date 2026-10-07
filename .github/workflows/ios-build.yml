@@ -36,6 +36,25 @@ jobs:
           echo "=== Ищем собранный .app ==="
           find build-ios-client -name "*.app" -type d
 
+      - name: Create Steam dylib stub
+        run: |
+          cat > /tmp/stub.c << 'EOF'
+          void SteamAPI_Init() {}
+          void SteamAPI_Shutdown() {}
+          int SteamAPI_IsSteamRunning() { return 0; }
+          void SteamAPI_RunCallbacks() {}
+          EOF
+          xcrun --sdk iphoneos clang -arch arm64 -dynamiclib -o /tmp/libsteam_api.dylib /tmp/stub.c
+          APP_PATH=$(find build-ios-client -name "BestClient.app" -type d | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "BestClient.app не найден, ищем любой .app..."
+            APP_PATH=$(find build-ios-client -name "*.app" -type d | head -n 1)
+          fi
+          echo "Найден .app: $APP_PATH"
+          mkdir -p "$APP_PATH/Frameworks"
+          cp /tmp/libsteam_api.dylib "$APP_PATH/Frameworks/"
+          echo "Заглушка libsteam_api.dylib положена в $APP_PATH/Frameworks/"
+
       - name: Package IPA
         run: |
           APP_PATH=$(find . -name "BestClient.app" -type d | head -n 1)
