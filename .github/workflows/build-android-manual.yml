@@ -26,6 +26,7 @@ jobs:
           rustup target add i686-linux-android
           rustup target add aarch64-linux-android
           rustup target add x86_64-linux-android
+          chmod -R +x ./scripts/
 
       - name: Setup Android SDK manually
         run: |
