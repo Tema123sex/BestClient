@@ -15,7 +15,8 @@ jobs:
 
       - name: Prepare Linux
         run: |
-          sudo apt-get update -y
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo apt-get update -y -o Acquire::Retries=3 -o Acquire::http::Timeout=10
           sudo apt-get install -y ninja-build openjdk-21-jdk openssl curl wget unzip
           pip install cmake
           which cmake
@@ -68,9 +69,9 @@ jobs:
         run: |
           export TW_KEY_PW="$(openssl rand -base64 32)"
           keytool -genkey -v -keystore "$TW_KEY_NAME" -keyalg RSA -keysize 2048 -validity 10000 -alias "$TW_KEY_ALIAS" -storepass "$TW_KEY_PW" -keypass "$TW_KEY_PW" -dname "CN=DDNet"
-          scripts/android/cmake_android.sh all DDNet org.ddnet.client Release build-android
+          scripts/android/cmake_android.sh all BestClientCustom org.bestclient.custom Release build-android
           mkdir artifacts
-          mv build-android/DDNet.apk artifacts
+          find build-android -name "*.apk" -exec cp {} artifacts/ \;
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
