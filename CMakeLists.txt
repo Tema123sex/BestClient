@@ -2853,6 +2853,7 @@ if(CLIENT)
     graphics_threaded.h
     graphics_threaded_sprites.cpp
     input.cpp
+    keyboard.cpp
     input.h
     keynames.cpp
     keynames.h
