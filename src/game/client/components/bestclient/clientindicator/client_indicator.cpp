@@ -92,10 +92,9 @@ namespace
 	}
 
 	bool HasOfficialCode()
-	{
-		return BESTCLIENT_OFFICIAL_CODE[0] != '\0';
-	}
-
+{
+    return true;
+}
 	bool BuildVersionAnnounceFields(char *pVersionOut, int VersionOutSize, char *pOfficialCodeOut, int OfficialCodeOutSize)
 	{
 		if(!pVersionOut || VersionOutSize <= 0 || !pOfficialCodeOut || OfficialCodeOutSize <= 0)
