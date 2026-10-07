@@ -404,7 +404,10 @@ bool CInput::KeyPress(int Key) const
 	dbg_assert(Key >= KEY_FIRST && Key < KEY_LAST, "Key invalid: %d", Key);
 	return m_aFrameKeyStates[Key];
 }
-
+const char *CInput::KeyName(int Key) const
+{
+    return ::KeyName(Key);
+}
 int CInput::FindKeyByName(const char *pKeyName) const
 {
 	// check for numeric
