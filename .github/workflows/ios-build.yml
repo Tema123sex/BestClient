@@ -39,10 +39,131 @@ jobs:
       - name: Create Steam dylib stub
         run: |
           cat > /tmp/stub.c << 'EOF'
+          // Base API
           void SteamAPI_Init() {}
           void SteamAPI_Shutdown() {}
           int SteamAPI_IsSteamRunning() { return 0; }
           void SteamAPI_RunCallbacks() {}
+          int SteamAPI_GetHSteamPipe() { return 0; }
+          int SteamAPI_GetHSteamUser() { return 0; }
+          void SteamAPI_RegisterCallback() {}
+          void SteamAPI_UnregisterCallback() {}
+          void SteamAPI_RegisterCallResult() {}
+          void SteamAPI_UnregisterCallResult() {}
+          int SteamAPI_InitFlat() { return 0; }
+          void SteamAPI_ReleaseCurrentThreadMemory() {}
+          void SteamAPI_SetTryCatchCallbacks() {}
+          int SteamAPI_RestartAppIfNecessary() { return 0; }
+          void SteamAPI_WriteMiniDump() {}
+
+          // SteamUser
+          void* SteamUser() { return 0; }
+          int SteamUser_GetSteamID() { return 0; }
+          void SteamUser_BLoggedOn() {}
+          int SteamUser_InitiateGameConnection() { return 0; }
+          void SteamUser_TerminateGameConnection() {}
+          int SteamUser_GetAvailableVoice() { return 0; }
+          int SteamUser_GetVoice() { return 0; }
+          int SteamUser_DecompressVoice() { return 0; }
+          int SteamUser_GetVoiceOptimalSampleRate() { return 0; }
+
+          // SteamFriends
+          void* SteamFriends() { return 0; }
+          void SteamFriends_GetPersonaName() {}
+          int SteamFriends_GetFriendCount() { return 0; }
+          int SteamFriends_GetFriendByIndex() { return 0; }
+          void SteamFriends_GetFriendPersonaName() {}
+          int SteamFriends_GetFriendPersonaState() { return 0; }
+          int SteamFriends_GetFriendGamePlayed() { return 0; }
+          void SteamFriends_SetRichPresence() {}
+          void SteamFriends_ClearRichPresence() {}
+          void SteamFriends_GetFriendRichPresence() {}
+          int SteamFriends_GetFriendRichPresenceKeyCount() { return 0; }
+          void SteamFriends_GetFriendRichPresenceKeyByIndex() {}
+          void SteamFriends_RequestFriendRichPresence() {}
+          int SteamFriends_GetFriendAvatar() { return 0; }
+
+          // SteamUtils
+          void* SteamUtils() { return 0; }
+          int SteamUtils_GetAppID() { return 0; }
+          int SteamUtils_GetSecondsSinceAppActive() { return 0; }
+          int SteamUtils_GetServerRealTime() { return 0; }
+          void SteamUtils_SetOverlayNotificationPosition() {}
+          int SteamUtils_IsOverlayEnabled() { return 0; }
+          void SteamUtils_SetGameLauncher() {}
+          int SteamUtils_GetIPCountry() { return 0; }
+
+          // SteamUserStats
+          void* SteamUserStats() { return 0; }
+          int SteamUserStats_GetStat() { return 0; }
+          int SteamUserStats_SetStat() { return 0; }
+          int SteamUserStats_StoreStats() { return 0; }
+          int SteamUserStats_GetAchievement() { return 0; }
+          int SteamUserStats_SetAchievement() { return 0; }
+          int SteamUserStats_ClearAchievement() { return 0; }
+          int SteamUserStats_GetNumAchievements() { return 0; }
+          void SteamUserStats_GetAchievementName() {}
+          void SteamUserStats_GetAchievementDisplayAttribute() {}
+          int SteamUserStats_ResetAllStats() { return 0; }
+
+          // SteamApps
+          void* SteamApps() { return 0; }
+          int SteamApps_GetAppBuildId() { return 0; }
+          int SteamApps_GetAppInstallDir() { return 0; }
+          int SteamApps_IsAppInstalled() { return 0; }
+          int SteamApps_IsDlcInstalled() { return 0; }
+          int SteamApps_GetCurrentGameLanguage() { return 0; }
+          int SteamApps_GetAvailableGameLanguages() { return 0; }
+
+          // SteamMatchmaking
+          void* SteamMatchmaking() { return 0; }
+          int SteamMatchmaking_GetNumLobbyMembers() { return 0; }
+          int SteamMatchmaking_GetLobbyMemberByIndex() { return 0; }
+          void SteamMatchmaking_GetLobbyData() {}
+          int SteamMatchmaking_SetLobbyData() { return 0; }
+          void SteamMatchmaking_GetLobbyMemberData() {}
+          void SteamMatchmaking_SetLobbyMemberData() {}
+
+          // SteamNetworking
+          void* SteamNetworking() { return 0; }
+          int SteamNetworking_SendP2PPacket() { return 0; }
+          int SteamNetworking_IsP2PPacketAvailable() { return 0; }
+          int SteamNetworking_ReadP2PPacket() { return 0; }
+          int SteamNetworking_AcceptP2PSessionWithUser() { return 0; }
+          int SteamNetworking_CloseP2PSessionWithUser() { return 0; }
+
+          // SteamController
+          void* SteamController() { return 0; }
+          int SteamController_Init() { return 0; }
+          void SteamController_Shutdown() {}
+          void SteamController_RunFrame() {}
+          int SteamController_GetConnectedControllers() { return 0; }
+
+          // SteamInput
+          void* SteamInput() { return 0; }
+          int SteamInput_Init() { return 0; }
+          void SteamInput_Shutdown() {}
+          void SteamInput_RunFrame() {}
+          int SteamInput_GetConnectedControllers() { return 0; }
+
+          // SteamHTMLSurface
+          void* SteamHTMLSurface() { return 0; }
+          int SteamHTMLSurface_Init() { return 0; }
+          void SteamHTMLSurface_Shutdown() {}
+
+          // SteamInventory
+          void* SteamInventory() { return 0; }
+          int SteamInventory_GetResultStatus() { return 0; }
+          int SteamInventory_GetResultItems() { return 0; }
+
+          // SteamTimeline
+          void* SteamTimeline() { return 0; }
+          void SteamTimeline_SetTimelineTooltip() {}
+          void SteamTimeline_ClearTimelineTooltip() {}
+
+          // SteamRemotePlay
+          void* SteamRemotePlay() { return 0; }
+          int SteamRemotePlay_BEnableRemotePlayTogether() { return 0; }
           EOF
           xcrun --sdk iphoneos clang -arch arm64 -dynamiclib -o /tmp/libsteam_api.dylib /tmp/stub.c
           APP_PATH=$(find build-ios-client -name "BestClient.app" -type d | head -n 1)
