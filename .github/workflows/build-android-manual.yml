@@ -16,7 +16,7 @@ jobs:
       - name: Prepare Linux
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y ninja-build openjdk-21-jdk openssl curl
+          sudo apt-get install -y ninja-build openjdk-21-jdk openssl curl wget unzip
           pip install cmake
           which cmake
           cmake --version
@@ -27,8 +27,21 @@ jobs:
           rustup target add aarch64-linux-android
           rustup target add x86_64-linux-android
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Setup Android SDK manually
+        run: |
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          cd $HOME/android-sdk/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q commandlinetools-linux-11076708_latest.zip
+          mv cmdline-tools latest
+          rm commandlinetools-linux-11076708_latest.zip
+          export ANDROID_HOME=$HOME/android-sdk
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          yes | sdkmanager --licenses || true
+          sdkmanager "platform-tools" "platforms;android-34"
 
       - name: Install NDK and Build Tools
         run: |
@@ -54,7 +67,6 @@ jobs:
         run: |
           export TW_KEY_PW="$(openssl rand -base64 32)"
           keytool -genkey -v -keystore "$TW_KEY_NAME" -keyalg RSA -keysize 2048 -validity 10000 -alias "$TW_KEY_ALIAS" -storepass "$TW_KEY_PW" -keypass "$TW_KEY_PW" -dname "CN=DDNet"
-          export PATH=/home/runner/cmake/bin:$PATH
           scripts/android/cmake_android.sh all DDNet org.ddnet.client Release build-android
           mkdir artifacts
           mv build-android/DDNet.apk artifacts
