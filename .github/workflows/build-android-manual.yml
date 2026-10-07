@@ -16,12 +16,12 @@ jobs:
       - name: Prepare Linux
         run: |
           sudo apt-get update -y
-          sudo apt-get install ninja-build openjdk-21-jdk openssl
-          curl -L0 https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
-          mkdir -p /home/runner/cmake
-          tar --strip-components 1 -C /home/runner/cmake -xf cmake-3.22.1-Linux-x86_64.tar.gz
+          sudo apt-get install -y ninja-build openjdk-21-jdk openssl curl
+          pip install cmake
+          which cmake
+          cmake --version
           rustup default 1.92.0
-          cargo install cargo-ndk
+          cargo install cargo-ndk --locked
           rustup target add armv7-linux-androideabi
           rustup target add i686-linux-android
           rustup target add aarch64-linux-android
