@@ -41,9 +41,7 @@ jobs:
           cat > /tmp/stub.c << 'EOF'
           #include <stdint.h>
 
-          // ============================================================
           // Base Steam API
-          // ============================================================
           void SteamAPI_Init() {}
           void SteamAPI_Shutdown() {}
           int SteamAPI_IsSteamRunning() { return 0; }
@@ -62,9 +60,7 @@ jobs:
           void SteamAPI_WriteMiniDump() {}
           void* SteamAPI_GetSteamInstallPath() { return 0; }
 
-          // ============================================================
           // ISteamApps
-          // ============================================================
           void* SteamAPI_ISteamApps() { return 0; }
           int SteamAPI_ISteamApps_BIsSubscribed() { return 0; }
           int SteamAPI_ISteamApps_BIsLowViolence() { return 0; }
@@ -95,9 +91,7 @@ jobs:
           int SteamAPI_ISteamApps_GetLaunchCommandLineArgCount() { return 0; }
           const char* SteamAPI_ISteamApps_GetLaunchCommandLineArgByIndex() { return ""; }
 
-          // ============================================================
           // ISteamUser
-          // ============================================================
           void* SteamAPI_ISteamUser() { return 0; }
           int SteamAPI_ISteamUser_GetHSteamUser() { return 0; }
           int SteamAPI_ISteamUser_BLoggedOn() { return 0; }
@@ -129,9 +123,7 @@ jobs:
           int SteamAPI_ISteamUser_BIsPhoneIdentifying() { return 0; }
           int SteamAPI_ISteamUser_BIsPhoneRequiringVerification() { return 0; }
 
-          // ============================================================
           // ISteamFriends
-          // ============================================================
           void* SteamAPI_ISteamFriends() { return 0; }
           const char* SteamAPI_ISteamFriends_GetPersonaName() { return ""; }
           uint64_t SteamAPI_ISteamFriends_SetPersonaName() { return 0; }
@@ -208,9 +200,7 @@ jobs:
           int SteamAPI_ISteamFriends_GetNumChatsWithUnreadPriorityMessages() { return 0; }
           void SteamAPI_ISteamFriends_ActivateGameOverlayRemotePlayTogetherInviteDialog() {}
 
-          // ============================================================
           // ISteamUtils
-          // ============================================================
           void* SteamAPI_ISteamUtils() { return 0; }
           unsigned int SteamAPI_ISteamUtils_GetSecondsSinceAppActive() { return 0; }
           unsigned int SteamAPI_ISteamUtils_GetSecondsSinceComputerActive() { return 0; }
@@ -251,9 +241,7 @@ jobs:
           void SteamAPI_ISteamUtils_SetGameLauncherMode() {}
           int SteamAPI_ISteamUtils_DismissFloatingGamepadTextInput() { return 0; }
 
-          // ============================================================
           // ISteamUserStats
-          // ============================================================
           void* SteamAPI_ISteamUserStats() { return 0; }
           int SteamAPI_ISteamUserStats_RequestCurrentStats() { return 0; }
           int SteamAPI_ISteamUserStats_GetStat() { return 0; }
@@ -299,9 +287,7 @@ jobs:
           int SteamAPI_ISteamUserStats_GetGlobalStatHistoryFloat() { return 0; }
           int SteamAPI_ISteamUserStats_GetAchievementProgressLimits() { return 0; }
 
-          // ============================================================
           // ISteamMatchmaking
-          // ============================================================
           void* SteamAPI_ISteamMatchmaking() { return 0; }
           int SteamAPI_ISteamMatchmaking_GetFavoriteGameCount() { return 0; }
           int SteamAPI_ISteamMatchmaking_GetFavoriteGame() { return 0; }
@@ -342,9 +328,7 @@ jobs:
           int SteamAPI_ISteamMatchmaking_SetLobbyOwner() { return 0; }
           int SteamAPI_ISteamMatchmaking_SetLinkedLobby() { return 0; }
 
-          // ============================================================
           // ISteamNetworking
-          // ============================================================
           void* SteamAPI_ISteamNetworking() { return 0; }
           int SteamAPI_ISteamNetworking_SendP2PPacket() { return 0; }
           int SteamAPI_ISteamNetworking_IsP2PPacketAvailable() { return 0; }
@@ -369,9 +353,7 @@ jobs:
           int SteamAPI_ISteamNetworking_GetSocketConnectionType() { return 0; }
           int SteamAPI_ISteamNetworking_GetMaxPacketSize() { return 0; }
 
-          // ============================================================
           // ISteamRemoteStorage
-          // ============================================================
           void* SteamAPI_ISteamRemoteStorage() { return 0; }
           int SteamAPI_ISteamRemoteStorage_FileWrite() { return 0; }
           int SteamAPI_ISteamRemoteStorage_FileRead() { return 0; }
@@ -429,9 +411,7 @@ jobs:
           uint64_t SteamAPI_ISteamRemoteStorage_EnumeratePublishedWorkshopFiles() { return 0; }
           uint64_t SteamAPI_ISteamRemoteStorage_UGCDownloadToLocation() { return 0; }
 
-          // ============================================================
           // ISteamController / ISteamInput
-          // ============================================================
           void* SteamAPI_ISteamController() { return 0; }
           void* SteamAPI_ISteamInput() { return 0; }
           int SteamAPI_ISteamController_Init() { return 0; }
@@ -470,9 +450,7 @@ jobs:
           int SteamAPI_ISteamInput_TranslateActionOrigin() { return 0; }
           int SteamAPI_ISteamInput_GetControllerBindingRevision() { return 0; }
 
-          // ============================================================
           // ISteamHTMLSurface
-          // ============================================================
           void* SteamAPI_ISteamHTMLSurface() { return 0; }
           int SteamAPI_ISteamHTMLSurface_Init() { return 0; }
           int SteamAPI_ISteamHTMLSurface_Shutdown() { return 0; }
@@ -485,15 +463,12 @@ jobs:
           void SteamAPI_ISteamHTMLSurface_GoBack() {}
           void SteamAPI_ISteamHTMLSurface_GoForward() {}
           void SteamAPI_ISteamHTMLSurface_AddHeader() {}
-          void SteamAPI_ISteamHTMLSurface_SetHorizontalScroll() {}
-          void SteamAPI_ISteamHTMLSurface_SetVerticalScroll() {}
           void SteamAPI_ISteamHTMLSurface_SetKeyFocus() {}
           void SteamAPI_ISteamHTMLSurface_ViewSource() {}
           void SteamAPI_ISteamHTMLSurface_CopyToClipboard() {}
           void SteamAPI_ISteamHTMLSurface_PasteFromClipboard() {}
           void SteamAPI_ISteamHTMLSurface_Find() {}
           void SteamAPI_ISteamHTMLSurface_StopFind() {}
-          void SteamAPI_ISteamHTMLSurface_GetLinkAtPosition() {}
           void SteamAPI_ISteamHTMLSurface_SetCookie() {}
           void SteamAPI_ISteamHTMLSurface_SetCookie2() {}
           void SteamAPI_ISteamHTMLSurface_MouseUp() {}
@@ -504,19 +479,11 @@ jobs:
           void SteamAPI_ISteamHTMLSurface_KeyDown() {}
           void SteamAPI_ISteamHTMLSurface_KeyUp() {}
           void SteamAPI_ISteamHTMLSurface_KeyChar() {}
-          void SteamAPI_ISteamHTMLSurface_SetHorizontalScroll() {}
-          void SteamAPI_ISteamHTMLSurface_SetVerticalScroll() {}
-          void SteamAPI_ISteamHTMLSurface_GetHorizontalScroll() {}
-          void SteamAPI_ISteamHTMLSurface_GetVerticalScroll() {}
-          void SteamAPI_ISteamHTMLSurface_GetCurrentScroll() {}
           void SteamAPI_ISteamHTMLSurface_SetBackgroundMode() {}
-          void SteamAPI_ISteamHTMLSurface_GetLinkAtPosition() {}
           void SteamAPI_ISteamHTMLSurface_SetDPIScalingFactor() {}
           void SteamAPI_ISteamHTMLSurface_OpenDeveloperTools() {}
 
-          // ============================================================
           // ISteamInventory
-          // ============================================================
           void* SteamAPI_ISteamInventory() { return 0; }
           int SteamAPI_ISteamInventory_GetResultStatus() { return 0; }
           int SteamAPI_ISteamInventory_GetResultItems() { return 0; }
@@ -557,9 +524,7 @@ jobs:
           int SteamAPI_ISteamInventory_SubmitUpdateProperties() { return 0; }
           int SteamAPI_ISteamInventory_InspectItem() { return 0; }
 
-          // ============================================================
           // ISteamTimeline
-          // ============================================================
           void* SteamAPI_ISteamTimeline() { return 0; }
           void SteamAPI_ISteamTimeline_SetTimelineStateDescription() {}
           void SteamAPI_ISteamTimeline_ClearTimelineStateDescription() {}
@@ -568,9 +533,7 @@ jobs:
           void SteamAPI_ISteamTimeline_ClearTimelineTooltip() {}
           void SteamAPI_ISteamTimeline_SetTimelineGameMode() {}
 
-          // ============================================================
           // ISteamRemotePlay
-          // ============================================================
           void* SteamAPI_ISteamRemotePlay() { return 0; }
           unsigned int SteamAPI_ISteamRemotePlay_GetSessionCount() { return 0; }
           uint64_t SteamAPI_ISteamRemotePlay_GetSessionID() { return 0; }
@@ -581,9 +544,7 @@ jobs:
           int SteamAPI_ISteamRemotePlay_BStartRemotePlayTogether() { return 0; }
           int SteamAPI_ISteamRemotePlay_BSendRemotePlayTogetherInvite() { return 0; }
 
-          // ============================================================
           // ISteamGameServer
-          // ============================================================
           void* SteamAPI_ISteamGameServer() { return 0; }
           int SteamAPI_ISteamGameServer_InitGameServer() { return 0; }
           void SteamAPI_ISteamGameServer_SetProduct() {}
@@ -631,9 +592,7 @@ jobs:
           uint64_t SteamAPI_ISteamGameServer_AssociateWithClan() { return 0; }
           uint64_t SteamAPI_ISteamGameServer_ComputeNewPlayerCompatibility() { return 0; }
 
-          // ============================================================
           // ISteamHTTP
-          // ============================================================
           void* SteamAPI_ISteamHTTP() { return 0; }
           int SteamAPI_ISteamHTTP_CreateHTTPRequest() { return 0; }
           int SteamAPI_ISteamHTTP_SetHTTPRequestContextValue() { return 0; }
@@ -661,9 +620,7 @@ jobs:
           int SteamAPI_ISteamHTTP_SetHTTPRequestAbsoluteTimeoutMS() { return 0; }
           int SteamAPI_ISteamHTTP_GetHTTPRequestWasTimedOut() { return 0; }
 
-          // ============================================================
           // ISteamMusic
-          // ============================================================
           void* SteamAPI_ISteamMusic() { return 0; }
           int SteamAPI_ISteamMusic_BIsEnabled() { return 0; }
           int SteamAPI_ISteamMusic_BIsPlaying() { return 0; }
@@ -675,9 +632,7 @@ jobs:
           void SteamAPI_ISteamMusic_SetVolume() {}
           float SteamAPI_ISteamMusic_GetVolume() { return 0; }
 
-          // ============================================================
           // ISteamScreenshots
-          // ============================================================
           void* SteamAPI_ISteamScreenshots() { return 0; }
           int SteamAPI_ISteamScreenshots_WriteScreenshot() { return 0; }
           int SteamAPI_ISteamScreenshots_AddScreenshotToLibrary() { return 0; }
@@ -689,9 +644,7 @@ jobs:
           int SteamAPI_ISteamScreenshots_IsScreenshotsHooked() { return 0; }
           int SteamAPI_ISteamScreenshots_AddVRScreenshotToLibrary() { return 0; }
 
-          // ============================================================
           // ISteamUGC
-          // ============================================================
           void* SteamAPI_ISteamUGC() { return 0; }
           uint64_t SteamAPI_ISteamUGC_CreateQueryUserUGCRequest() { return 0; }
           uint64_t SteamAPI_ISteamUGC_CreateQueryAllUGCRequest() { return 0; }
