@@ -1,0 +1,59 @@
+name: Build iOS IPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install build tools
+        run: |
+          brew install autoconf automake cmake libtool m4 ninja pkg-config
+
+      - name: Add Rust iOS targets
+        run: |
+          rustup target add aarch64-apple-ios
+          rustup target add aarch64-apple-ios-sim
+
+      - name: Build ddnet-libs for iOS
+        run: |
+          export M4="$(brew --prefix m4)/bin/m4"
+          mkdir -p build-ios-libs
+          ./scripts/compile_libs/gen_libs.sh build-ios-libs ios
+          find build-ios-libs -type d -name ios -exec rm -rf {} + -prune
+          cp -r build-ios-libs/ddnet-libs/. ddnet-libs/
+
+      - name: Build BestClient for iOS
+        run: |
+          ./scripts/ios/cmake_ios.sh device BestClient org.bestclient.app Release build-ios-client -DSTEAM=OFF -DEXTERNAL_STEAM_API_DYLIB=""
+          echo "=== Ищем собранный .app ==="
+          find build-ios-client -name "*.app" -type d
+
+      - name: Package IPA
+        run: |
+          APP_PATH=$(find . -name "BestClient.app" -type d | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "BestClient.app не найден, ищем любой .app..."
+            APP_PATH=$(find . -name "*.app" -type d | head -n 1)
+          fi
+          if [ -z "$APP_PATH" ]; then
+            echo "Не найден ни один .app!"
+            find . -name "*.app" -type d
+            exit 1
+          fi
+          echo "Найден: $APP_PATH"
+          mkdir -p Payload
+          cp -r "$APP_PATH" Payload/
+          zip -r BestClient.ipa Payload
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: BestClient-iOS-IPA
+          path: BestClient.ipa
