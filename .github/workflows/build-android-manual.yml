@@ -68,8 +68,8 @@ jobs:
           TW_KEY_ALIAS: DDNet-Key
         run: |
           export TW_KEY_PW="$(openssl rand -base64 32)"
-          keytool -genkey -v -keystore "$TW_KEY_NAME" -keyalg RSA -keysize 2048 -validity 10000 -alias "$TW_KEY_ALIAS" -storepass "$TW_KEY_PW" -keypass "$TW_KEY_PW" -dname "CN=DDNet"
-          scripts/android/cmake_android.sh arm64 DDNet org.ddnet.client Release build-android
+          keytool -genkey -v -keystore "$TW_KEY_NAME" -keyalg RSA -keysize 2048 -validity 10000 -alias "$TW_KEY_ALIAS" -storepass "$TW_KEY_PW" -keypass "$TW_KEY_PW" -dname "CN=DDNet" -sigalg SHA256withRSA
+          scripts/android/cmake_android.sh arm64 DDNet org.ddnet.client Debug build-android
           mkdir artifacts
           mv build-android/DDNet.apk artifacts
 
