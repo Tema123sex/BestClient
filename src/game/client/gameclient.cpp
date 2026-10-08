@@ -942,8 +942,8 @@ void CGameClient::OnRender()
 		!m_Menus.IsActive() &&
 		!m_GameConsole.IsActive() &&
 		!m_Scoreboard.IsActive();
-	if(ChatMouseUiActive)
-		Ui()->Update();
+	// if(ChatMouseUiActive)
+//     Ui()->Update();
 	m_AspectRatio.BeginFrame();
 	// bestclient
 
