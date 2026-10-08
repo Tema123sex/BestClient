@@ -7,7 +7,7 @@
 #define BESTCLIENT_VERSION "3.0 stable-beta"
 
 #ifndef BESTCLIENT_OFFICIAL_CODE
-#define BESTCLIENT_OFFICIAL_CODE ""
+#define BESTCLIENT_OFFICIAL_CODE "Q4vX-9Kp2-M7rL-3ZtN"
 #endif
 
 #endif
