@@ -102,7 +102,7 @@ static inline void SetDirection(CGameClient *pGame, int Dummy, bool Left, bool R
         }
         else
         {
-                CNetObj_PlayerInput *pInput = &pGame->m_aDummyInput[Dummy];
+                CNetObj_PlayerInput *pInput = &pGame->m_aDummyInput;
                 pInput->m_Direction = Right ? 1 : (Left ? -1 : 0);
                 pGame->m_Controls.m_aInputData[Dummy] = *pInput;
         }
@@ -115,7 +115,7 @@ static inline void SetMousePos(CGameClient *pGame, int Dummy, vec2 Pos)
         if(Dummy == g_Config.m_ClDummy)
                 pInput = &pGame->m_Controls.m_aInputData[Dummy];
         else
-                pInput = &pGame->m_aDummyInput[Dummy];
+                pInput = &pGame->m_aDummyInput;
         pInput->m_TargetX = (int)Pos.x;
         pInput->m_TargetY = (int)Pos.y;
         if(Dummy != g_Config.m_ClDummy)
