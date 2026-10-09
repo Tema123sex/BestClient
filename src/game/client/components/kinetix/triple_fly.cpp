@@ -259,12 +259,8 @@ void CBotNet::UpdateTripleFly()
                         if(length_squared(delta) <= maxDist * maxDist)
                                 canHammerNow = true;
                 }
-                if(canHammerNow)
-                {
-                        const int FireDelayTicks = pGame->m_aTuning[actingD].GetWeaponFireDelay(WEAPON_HAMMER) * Client()->GameTickSpeed();
-                        if(Client()->GameTick(g_Config.m_ClDummy) - pGame->m_DummyLastFireTick < 
-                                canHammerNow = false;
-                }
+// BestClient: m_DummyLastFireTick отсутствует — не проверяем задержку
+canHammerNow = true;
                 if(canHammerNow)
                 {
                         if(m_TripleFlyHooking)
