@@ -177,7 +177,7 @@ void CIRC::SendIRC(const char *pText)
 void CIRC::QueueHandshake(int Dummy)
 {
 	// Skip already-sent dummies or disconnected dummies
-	if(Dummy != 0 && !Client()->DummyConnected(Dummy))
+	if(Dummy != 0 && !Client()->DummyConnected())
 		return;
 	if(m_aHandshakeSent[Dummy])
 		return;
@@ -217,7 +217,7 @@ void CIRC::SendEmoteOnDummy(int Dummy, int Emoticon)
 		// Non-active dummy — send directly on its connection
 		CMsgPacker Msg(NETMSGTYPE_CL_EMOTICON, false);
 		Msg.AddInt(Emoticon);
-		int Conn = IClient::CONN_DUMMY_START + Dummy - 1;
+		int Conn = IClient::CONN_MAIN;
 		Client()->SendMsg(Conn, &Msg, MSGFLAG_VITAL);
 	}
 }
@@ -265,7 +265,7 @@ void CIRC::OnRender()
 		// Check for newly connected dummies that still need handshake
 		for(int d = 0; d < MAX_DUMMIES; ++d)
 		{
-			if(d != 0 && !Client()->DummyConnected(d))
+			if(d != 0 && !Client()->DummyConnected())
 				continue;
 			if(!m_aHandshakeSent[d])
 			{
@@ -278,7 +278,7 @@ void CIRC::OnRender()
 		int CurTick = Client()->GameTick(0);
 		for(int d = 0; d < MAX_DUMMIES; ++d)
 		{
-			if(d != 0 && !Client()->DummyConnected(d))
+			if(d != 0 && !Client()->DummyConnected())
 				continue;
 
 			if(!m_aSendQueue[d].empty() && CurTick >= m_aNextEmoteSendTick[d])
