@@ -3267,54 +3267,13 @@ if(CLIENT)
     ui_rect.h
     ui_scrollregion.cpp
     ui_scrollregion.h
-    components/kinetix/aimbot.cpp
-    components/kinetix/aimbot.h
-    components/kinetix/basic_avoid_freeze.cpp
-    components/kinetix/basic_avoid_freeze.h
-    components/kinetix/attack/attack.cpp
-    components/kinetix/attack/attack_commands.cpp
-    components/kinetix/bot_control.cpp
-    components/kinetix/bot_control.h
-    components/kinetix/clickgui.cpp
-    components/kinetix/clickgui.h
-    components/kinetix/code_exec/code_exec.cpp
-    components/kinetix/code_exec/code_exec.h
-    components/kinetix/code_exec/code_exec_bindings.cpp
-    components/kinetix/code_exec/file_dialog.cpp
-    components/kinetix/code_exec/file_dialog.h
-    components/kinetix/console_commands.cpp
-    components/kinetix/dummies/dummy_helpers.cpp
-    components/kinetix/dummies/dummy_management.cpp
-    components/kinetix/dummies/process_dummy.cpp
-    components/kinetix/esp.cpp
-    components/kinetix/esp.h
-    components/kinetix/fake_aim.cpp
-    components/kinetix/helpers.cpp
-    components/kinetix/irc.cpp
-    components/kinetix/irc.h
-    components/kinetix/kinetix.cpp
-    components/kinetix/kinetix.h
-    components/kinetix/kinetix_internal.h
-    components/kinetix/kinetix_lines.cpp
-    components/kinetix/kinetix_lines.h
-    components/kinetix/kinodynamic/kinodynamic.cpp
-    components/kinetix/kinodynamic/kinodynamic_render.cpp
-    components/kinetix/laser_unfreeze.cpp
-    components/kinetix/fly_ride.cpp
-    components/kinetix/triple_fly.cpp
-    components/kinetix/tas.cpp
-    components/kinetix/tas.h
-    components/kinetix/trajectory.cpp
-    components/kinetix/trajectory.h
-    components/kinetix/macro/macro_commands.cpp
-    components/kinetix/pathfinder/map_grid.cpp
-    components/kinetix/pathfinder/pathfinder.cpp
-    components/kinetix/pathfinder/pathfinder_astar.cpp
-    components/kinetix/pathfinder/pathfinder_tab.cpp
-    components/kinetix/pathfinder/pathfinder_tunnel.cpp
-    
-    # tidy-alphabetical-end
-  )
+# tidy-alphabetical-end
+)
+file(GLOB_RECURSE KINETIX_SOURCES
+    "${PROJECT_SOURCE_DIR}/src/game/client/components/kinetix/*.cpp"
+    "${PROJECT_SOURCE_DIR}/src/game/client/components/kinetix/*.h"
+)
+list(APPEND GAME_CLIENT ${KINETIX_SOURCES})
   set_src(GAME_EDITOR GLOB_RECURSE src/game/editor
     # tidy-alphabetical-start
     auto_map.cpp
