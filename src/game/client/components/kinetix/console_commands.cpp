@@ -13,7 +13,7 @@ std::string CBotNet::ReplacePlaceholders(const std::string &Cmd, int DummyIndex,
                 int Count = 0;
                 for(int d = 0; d < MAX_DUMMIES; ++d)
                 {
-                        if(d != 0 && !pGame->Client()->DummyConnected(d))
+                        if(d != 0 && !pGame->Client()->DummyConnected())
                                 continue;
                         if(pGame->m_aLocalIds[d] < 0)
                                 continue;
@@ -128,7 +128,7 @@ void CBotNet::ConSendDummy(IConsole::IResult *pResult, void *pUserData)
                 if(!AllDummies && !aTargets[D])
                         continue;
                 // Skip disconnected dummies (0=main, always connected if online)
-                if(D != 0 && !pSelf->Client()->DummyConnected(D))
+                if(D != 0 && !pSelf->Client()->DummyConnected())
                         continue;
 
                 // Replace placeholders per-dummy
