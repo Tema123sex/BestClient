@@ -23,6 +23,6 @@ void CBotNet::ResetDummyInputs(int Dummy)
         if(Dummy < 0 || Dummy >= MAX_DUMMIES)
                 return;
         CGameClient *pGame = GameClient();
-        CNetObj_PlayerInput *pInput = &pGame->m_aDummyInput[Dummy];
+        CNetObj_PlayerInput *pInput = &pGame->m_DummyInput;
         ResetAndCommitInput(pGame, pInput, Dummy);
 }
