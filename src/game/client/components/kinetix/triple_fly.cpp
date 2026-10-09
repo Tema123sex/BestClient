@@ -12,7 +12,7 @@ static void TripleFlyReleaseHook(CGameClient *pGame, int Dummy)
 {
         if(!pGame || Dummy < 0 || Dummy >= MAX_DUMMIES)
                 return;
-        CNetObj_PlayerInput *pDummy = &pGame->m_aDummyInput[Dummy];
+        CNetObj_PlayerInput *pDummy = &pGame->m_DummyInput;
         if(pDummy->m_Hook)
         {
                 pDummy->m_Hook = 0;
@@ -192,7 +192,7 @@ void CBotNet::UpdateTripleFly()
                 {
                         if(D == activeD)
                                 continue;
-                        if(D != 0 && !Client()->DummyConnected(D))
+                        if(D != 0 && !Client()->DummyConnected())
                                 continue;
                         const int cid = pGame->m_aLocalIds[D];
                         if(cid < 0 || cid >= 128 || !pGame->m_aClients[cid].m_Active)
@@ -209,7 +209,7 @@ void CBotNet::UpdateTripleFly()
         {
                 const int wantD = g_Config.m_KxTripleFlyDummyId;
                 if(wantD >= 0 && wantD < MAX_DUMMIES && wantD != activeD &&
-                   (wantD == 0 || Client()->DummyConnected(wantD)))
+                   (wantD == 0 || Client()->DummyConnected())
                         actingD = wantD;
         }
 
@@ -262,7 +262,7 @@ void CBotNet::UpdateTripleFly()
                 if(canHammerNow)
                 {
                         const int FireDelayTicks = pGame->m_aTuning[actingD].GetWeaponFireDelay(WEAPON_HAMMER) * Client()->GameTickSpeed();
-                        if(Client()->GameTick(g_Config.m_ClDummy) - pGame->m_aDummyLastFireTick[actingD] < FireDelayTicks)
+                        if(Client()->GameTick(g_Config.m_ClDummy) - pGame->m_DummyLastFireTick < 
                                 canHammerNow = false;
                 }
                 if(canHammerNow)
@@ -366,7 +366,7 @@ void CBotNet::UpdateTripleFly()
                 return;
         }
 
-        CNetObj_PlayerInput *pDummy = &pGame->m_aDummyInput[actingD];
+        CNetObj_PlayerInput *pDummy = &pGame->m_DummyInput;
         if(dist > (float)g_Config.m_KxTripleFlyRadius)
         {
                 const vec2 aim = TripleFlyPredictHookPos(pGame, targetCid, actingPos) - actingPos;
