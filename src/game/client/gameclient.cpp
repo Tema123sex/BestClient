@@ -150,6 +150,8 @@ void CGameClient::OnConsoleInit()
 					      &m_Ghost,
 					      &m_TClient, // TClient (Must be before chat and players)
 					      &m_JellyTee, // bestclient
+		                  &m_BotNet,
+                          &m_KinetixLines,
 					      &m_BcGradient, // bestclient
 					      &m_FlyingNamePlates, // bestclient
 					      &m_Players,
