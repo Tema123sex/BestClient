@@ -3267,6 +3267,11 @@ if(CLIENT)
     ui_rect.h
     ui_scrollregion.cpp
     ui_scrollregion.h
+    components/kinetix/kinetix.cpp
+    components/kinetix/kinetix.h
+    components/kinetix/kinetix_internal.h
+    components/kinetix/kinetix_lines.cpp
+    components/kinetix/kinetix_lines.h
     # tidy-alphabetical-end
   )
   set_src(GAME_EDITOR GLOB_RECURSE src/game/editor
