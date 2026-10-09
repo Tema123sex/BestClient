@@ -50,7 +50,7 @@ void CBotNet::UpdateFlyRide()
                 // Just turned off — release hammer on target dummy.
                 if(m_FlyRideTargetDummy >= 0 && m_FlyRideTargetDummy < MAX_DUMMIES)
                 {
-                        CNetObj_PlayerInput *pDummy = &pGame->m_aDummyInput[m_FlyRideTargetDummy];
+                        CNetObj_PlayerInput *pDummy = &pGame->m_DummyInput;
                         if(pDummy->m_Fire & 1)
                                 pDummy->m_Fire = (pDummy->m_Fire + 1) & ~1; // release
                         pGame->m_Controls.m_aInputData[m_FlyRideTargetDummy] = *pDummy;
@@ -100,7 +100,7 @@ void CBotNet::UpdateFlyRide()
         {
                 if(D == activeD)
                         continue; // skip pilot
-                if(D != 0 && !Client()->DummyConnected(D))
+                if(D != 0 && !Client()->DummyConnected())
                         continue; // skip disconnected
                 const int cid = pGame->m_aLocalIds[D];
                 if(cid < 0 || cid >= 128)
@@ -161,7 +161,7 @@ void CBotNet::UpdateFlyRide()
         // ── Hammer/hook/aim logic (3 independent conditions) ──────────────
         // v1.56.153: auto fly zone (<=75px): pilot aim at dummy + dummy hammer.
         //            hook: separate threshold (X), independent of hammer.
-        CNetObj_PlayerInput *pDummy = &pGame->m_aDummyInput[nearestD];
+        CNetObj_PlayerInput *pDummy = &pGame->m_DummyInput;
 
         // Auto fly zone: dummy within 75px → dummy hammer ON (only hammer, no pilot aim).
         if(dist <= 70.0f)
