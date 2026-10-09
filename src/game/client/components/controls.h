@@ -44,6 +44,9 @@ public:
 	CNetObj_PlayerInput m_aFastInput[NUM_DUMMIES];
 	bool m_FastInputHookAction = false;
 	bool m_FastInputFireAction = false;
+    // Kinetix
+    bool m_LaserUnfreezeAimActive = false;
+    vec2 m_LaserUnfreezeAimOffset = vec2(0, 0);
 
 	CControls();
 	int Sizeof() const override { return sizeof(*this); }
