@@ -5,7 +5,7 @@ void CBotNet::ProcessDummy(int Dummy)
 {
         CGameClient *pGame = GameClient();
         CBotNetDummy &State = m_aDummies[Dummy];
-        CNetObj_PlayerInput *pInput = &pGame->m_aDummyInput[Dummy];
+        CNetObj_PlayerInput *pInput = &pGame->m_DummyInput;
         int LocalID = pGame->m_aLocalIds[Dummy];
         int64_t CurTick = Client()->GameTick(0);
 
