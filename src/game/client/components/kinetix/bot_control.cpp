@@ -182,7 +182,7 @@ void CBotControl::ActionStop(int Dummy)
         if(Dummy == g_Config.m_ClDummy)
                 pInput = &GameClient()->m_Controls.m_aInputData[Dummy];
         else
-                pInput = &GameClient()->m_aDummyInput[Dummy];
+                pInput = &GameClient()->m_DummyInput;
 
         pInput->m_Jump = 0;
         pInput->m_Hook = 0;
