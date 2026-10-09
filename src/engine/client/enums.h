@@ -5,7 +5,8 @@
 
 enum
 {
-	NUM_DUMMIES = 2,
+    NUM_DUMMIES = 2,
+    MAX_DUMMIES = 8,
 };
 
 #endif
