@@ -3273,6 +3273,9 @@ file(GLOB_RECURSE KINETIX_SOURCES
     "${PROJECT_SOURCE_DIR}/src/game/client/components/kinetix/*.cpp"
     "${PROJECT_SOURCE_DIR}/src/game/client/components/kinetix/*.h"
 )
+list(FILTER KINETIX_SOURCES EXCLUDE REGEX ".*/code_exec/.*")
+list(FILTER KINETIX_SOURCES EXCLUDE REGEX ".*/macro/.*")
+list(APPEND GAME_CLIENT ${KINETIX_SOURCES})
 list(APPEND GAME_CLIENT ${KINETIX_SOURCES})
   set_src(GAME_EDITOR GLOB_RECURSE src/game/editor
     # tidy-alphabetical-start
