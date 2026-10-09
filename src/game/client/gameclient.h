@@ -83,6 +83,8 @@
 #include "components/debughud.h"
 #include "components/effects.h"
 #include "components/emoticon.h"
+#include "components/kinetix/kinetix.h"       // kinetix
+#include "components/kinetix/kinetix_lines.h" // kinetix
 #include "components/flow.h"
 #include "components/freezebars.h"
 #include "components/ghost.h"
@@ -218,6 +220,8 @@ public:
 	CInfoMessages m_InfoMessages;
 	CCamera m_Camera;
 	CChat m_Chat;
+    CBotNet m_BotNet;             // kinetix
+    CKinetixLines m_KinetixLines; // kinetix
 	CCensor m_Censor;
 	CMotd m_Motd;
 	CBroadcast m_Broadcast;
