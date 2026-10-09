@@ -85,6 +85,7 @@
 #include "components/emoticon.h"
 #include "components/kinetix/kinetix.h"       // kinetix
 #include "components/kinetix/kinetix_lines.h" // kinetix
+#include "components/kinetix/bot_control.h"   // kinetix
 #include "components/flow.h"
 #include "components/freezebars.h"
 #include "components/ghost.h"
@@ -222,6 +223,7 @@ public:
 	CChat m_Chat;
     CBotNet m_BotNet;             // kinetix
     CKinetixLines m_KinetixLines; // kinetix
+    CBotControl m_BotControl;     // kinetix
 	CCensor m_Censor;
 	CMotd m_Motd;
 	CBroadcast m_Broadcast;
