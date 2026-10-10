@@ -170,17 +170,13 @@ void CBotNet::OnConsoleInit()
         // Only complex/temporal commands remain registered here. The cvar-converted
         // commands (kx_attack, kx_aimbot, kx_autoaim, etc.) are now accessible via
         // `toggle kx_attack 1 0` in binds and via direct `kx_attack 1` in console.
-        Console()->Register("kx_targets", "s[ids]", CFGFLAG_CLIENT, ConSetTargets, this, "Targets");
-        Console()->Register("kx_bots", "s[ids]", CFGFLAG_CLIENT, ConSetBots, this, "Bots (allies)");
-        Console()->Register("kx_atk_set", "iiiiiiiiiiiiiiii", CFGFLAG_CLIENT, ConAttackSettings, this, "Settings (16 params)");
-        Console()->Register("kx_atk_dists", "fffffff", CFGFLAG_CLIENT, ConAttackDists, this, "Radii");
-        Console()->Register("kx_rescue_ids", "s[ids]", CFGFLAG_CLIENT, ConRescueIds, this, "Rescue/Unrescue IDs");
-        Console()->Register("kx_pathfinder_go", "i[on] ?i[x] ?i[y]", CFGFLAG_CLIENT, ConPathfinderGo, this, "Move to position");
-        Console()->Register("kx_macro_load", "s[path]", CFGFLAG_CLIENT, ConMacroLoad, this, "Load macro from file");
-        Console()->Register("kx_macro_play", "i[on]", CFGFLAG_CLIENT, ConMacroPlay, this, "Play loaded macro");
-        Console()->Register("kx_macro_record", "i[on]", CFGFLAG_CLIENT, ConMacroRecord, this, "Record macro");
-        Console()->Register("kx_macro_save", "s[path]", CFGFLAG_CLIENT, ConMacroSave, this, "Save recorded macro");
-        Console()->Register("kx_macro_capture", "i[id]", CFGFLAG_CLIENT, ConMacroCapture, this, "Set capture ID");
+        // BestClient: macro_commands исключён из сборки
+// // BestClient: macro_commands исключён из сборки
+// Console()->Register("kx_macro_load", "s[path]", CFGFLAG_CLIENT, ConMacroLoad, this, "Load macro from file");
+// Console()->Register("kx_macro_play", "i[on]", CFGFLAG_CLIENT, ConMacroPlay, this, "Play loaded macro");
+// Console()->Register("kx_macro_record", "i[on]", CFGFLAG_CLIENT, ConMacroRecord, this, "Record macro");
+// Console()->Register("kx_macro_save", "s[path]", CFGFLAG_CLIENT, ConMacroSave, this, "Save recorded macro");
+// Console()->Register("kx_macro_capture", "i[id]", CFGFLAG_CLIENT, ConMacroCapture, this, "Set capture ID");
         Console()->Register("kx_send", "s[dummyids] r[command]", CFGFLAG_CLIENT, ConSendDummy, this, "Execute command on dummies");
 
         Console()->Register("kx_pf_live", "i[state]", CFGFLAG_CLIENT, ConPfLive, this, "Pathfinder tab state");
