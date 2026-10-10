@@ -208,12 +208,11 @@ void CBotNet::UpdateTripleFly()
         else
         {
                 const int wantD = g_Config.m_KxTripleFlyDummyId;
-                if(wantD >= 0 && wantD < MAX_DUMMIES && wantD != activeD &&
-                   (wantD == 0 || Client()->DummyConnected())
-                        actingD = wantD;
-        }
-
-        if(actingD < 0 || m_aDummies[actingD].m_MacroPlaying || m_aDummies[actingD].m_PathfinderGoActive)
+   if(wantD >= 0 && wantD < MAX_DUMMIES && wantD != activeD &&
+       (wantD == 0 || Client()->DummyConnected()))
+   {
+       actingD = wantD;
+   }        if(actingD < 0 || m_aDummies[actingD].m_MacroPlaying || m_aDummies[actingD].m_PathfinderGoActive)
         {
                 if(m_TripleFlyHooking)
                 {
