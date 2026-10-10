@@ -9,11 +9,6 @@
 // playback, tile editor and rendering.
 // =========================================================
 
-// Release ALL A* search buffers and stop the worker. Safe to call from
-// any state — it never touches the player or the map, only search data.
-// Without this the heavy buffers (nodes with per-node Traj/Inputs vectors,
-// RHEA population) stayed alive across idle periods and corrupted vector
-// headers led to crashes on restart (v1.56.165 BUG4).
 void CBotNet::PfClearSearchState()
 {
 	PfThreadStop();
@@ -42,7 +37,6 @@ void CBotNet::PfClearSearchState()
 	m_PfUiBestTotal = 0;
 }
 
-// Start a fresh search from the active player's predicted state.
 void CBotNet::PfResetRun()
 {
 	m_PfVPath.clear();
@@ -97,7 +91,6 @@ void CBotNet::PfResetRun()
 
 	m_PfVPath.push_back(Core.m_Pos);
 
-	// Force a flow-field rebuild with the currently active finish sources.
 	if(m_PfFlowField)
 	{
 		delete[] m_PfFlowField;
@@ -109,7 +102,7 @@ void CBotNet::PfResetRun()
 	const std::vector<vec2> &vFinishes = PfActiveFinishTiles();
 	if(vFinishes.empty())
 	{
-		dbg_msg("pathfinder", "PfResetRun: no finish tiles (paint custom finish tiles or play a map with finish)");
+		dbg_msg("pathfinder", "PfResetRun: no finish tiles");
 		return;
 	}
 
@@ -119,14 +112,12 @@ void CBotNet::PfResetRun()
 		int sTX = pf_clamp((int)(m_PfStartPos.x / 32.0f), 0, m_MapWidth - 1);
 		int sTY = pf_clamp((int)(m_PfStartPos.y / 32.0f), 0, m_MapHeight - 1);
 		float d = m_PfFlowField[sTY * m_MapWidth + sTX];
-		pFlowStatus = (d < 1e17f) ? "reachable" : "grid-unreachable (A* uses air-distance heuristic)";
+		pFlowStatus = (d < 1e17f) ? "reachable" : "grid-unreachable";
 	}
 
 	dbg_msg("pathfinder", "PfResetRun: start=(%.0f,%.0f) finishes=%d flow=%s",
 		Core.m_Pos.x, Core.m_Pos.y, (int)vFinishes.size(), pFlowStatus);
 
-	// Snapshot the predicted world for the worker thread. The worker never
-	// touches GameClient() — it only reads from this snapshot.
 	if(m_PfBaseWorld)
 		delete m_PfBaseWorld;
 	m_PfBaseWorld = new CGameWorld();
@@ -137,12 +128,11 @@ void CBotNet::PfResetRun()
 	m_PfAStarted = true;
 }
 
-// kx_pf_paste: copy the found path into the TAS Playground as the current run.
 void CBotNet::PfPasteToTas()
 {
 	if(!m_PfAPathReady)
 	{
-		dbg_msg("pathfinder", "kx_pf_paste: path not ready (run pathfinder first, or press Stop after it finds a path)");
+		dbg_msg("pathfinder", "kx_pf_paste: path not ready");
 		return;
 	}
 	if(m_PfFullInputs.empty())
@@ -153,17 +143,11 @@ void CBotNet::PfPasteToTas()
 	std::vector<std::pair<vec2, vec2>> vSegs;
 	for(const PfHookSeg &Seg : m_PfVHookSegs)
 		vSegs.emplace_back(Seg.teePos, Seg.hookPos);
-	// BestClient: m_Tas отсутствует
+	// BestClient: m_Tas отсутствует — функция TAS не поддерживается
+}
 
 // =========================================================
 // FLOW FIELD + SCORE FIELD
-//
-// Two fields, each filled by the same two-phase BFS:
-//   Phase 1: freeze tiles impassable — freeze-free routes win when they
-//            exist (freeze tiles stay 1e18 = unreachable).
-//   Phase 2: only if Phase 1 did not reach the run start — freeze becomes
-//            passable at normal cost (the only route crosses freeze).
-// Forbidden zones are always impassable (via the walk predicates).
 // =========================================================
 
 namespace
@@ -190,8 +174,7 @@ namespace
 
 		auto eikonal = [&](int x, int y) -> float {
 			float hop = pHop ? pHop[y * FW + x] : 1.0f;
-			if(hop < 0.0001f)
-				hop = 0.0001f;
+			if(hop < 0.0001f) hop = 0.0001f;
 			float txm = (x > 0 && state[y * FW + (x - 1)] == 2) ? pField[y * FW + (x - 1)] : 1e18f;
 			float txp = (x < FW - 1 && state[y * FW + (x + 1)] == 2) ? pField[y * FW + (x + 1)] : 1e18f;
 			float tym = (y > 0 && state[(y - 1) * FW + x] == 2) ? pField[(y - 1) * FW + x] : 1e18f;
@@ -313,10 +296,6 @@ void CBotNet::PfComputeFlowField(const vec2 &StartPos)
 		vSrcTiles.emplace_back(tx, ty);
 	}
 
-	// Freedom Path: tiles far from any non-air tile (walls, freeze,
-	// teleports, painted forbidden zones) are cheaper to traverse, so
-	// the flow field prefers open space. Ratio is stored x10 in config;
-	// the per-tile speed is squared so the modifier has real teeth.
 	const float freedomRatio = (g_Config.m_KxPfFreedom != 0) ? (float)g_Config.m_KxPfFreedomRatio / 10.0f : 0.0f;
 	std::vector<float> vHop;
 	if(freedomRatio > 0.0f)
@@ -377,7 +356,6 @@ void CBotNet::PfComputeFlowField(const vec2 &StartPos)
 	if(!phase1ReachedStart && g_Config.m_KxPfFreezeSupport != 0)
 		PfBfsFill(m_PfFlowField, m_MapWidth, m_MapHeight, vSrcTiles, fnTileWalk, fnTileFreeze, true, pHop);
 
-	// Score field: 4x resolution (8px cells) for sub-tile distance scoring.
 	m_PfScoreFieldW = m_MapWidth * 4;
 	m_PfScoreFieldH = m_MapHeight * 4;
 	int scoreSize = m_PfScoreFieldW * m_PfScoreFieldH;
@@ -439,8 +417,6 @@ static double PfNowSec()
 	return duration<double>(steady_clock::now().time_since_epoch()).count();
 }
 
-// Per-update step of the state machine. The search itself runs on the
-// worker thread; this polls the result and drives the playback cursor.
 void CBotNet::UpdatePathfinder()
 {
 	if(m_PfState != PF_STATE_RUNNING)
@@ -462,7 +438,6 @@ void CBotNet::UpdatePathfinder()
 		return;
 	}
 
-	// Playback phase: path found, advance the visual chunk cursor.
 	if(m_PfAPathReady)
 	{
 		m_PfTickCounter++;
@@ -487,10 +462,9 @@ void CBotNet::UpdatePathfinder()
 		return;
 	}
 
-	// Search phase: poll the worker result.
 	int result = m_PfThreadResult.load();
 	if(result == 0)
-		return; // still searching
+		return;
 
 	if(result == 1 && !PfEffortFreezeSupport()
 		&& m_PfAGoalIdx >= 0 && m_PfAGoalIdx < (int)m_PfANodes.size()
@@ -518,9 +492,6 @@ void CBotNet::UpdatePathfinder()
 		return;
 	}
 
-	// result == -1: no complete path. Reconstruct the best partial branch
-	// (lowest H = closest to a finish) so Play still works and the user sees
-	// how far the search got, instead of a dead "Finish" button.
 	{
 		int bestIdx = -1;
 		float bestH = 1e18f;
@@ -708,7 +679,6 @@ void CBotNet::PfGetUiStats(bool &outRunning, bool &outFinished, float &outPercen
 	}
 }
 
-// Try an alternative candidate from the backtrack buffer (legacy chunk loop).
 bool CBotNet::PfBacktrack()
 {
 	while(m_PfBacktrackIdx > 0)
@@ -718,7 +688,7 @@ bool CBotNet::PfBacktrack()
 
 		int nextIdx = entry.usedCandidateIdx + 1;
 		if(nextIdx >= entry.numCandidates || nextIdx >= (int)entry.candidates.size())
-			continue; // no more candidates at this level, pop further
+			continue;
 
 		m_PfCurPos = entry.pos;
 		m_PfCurVel = entry.vel;
@@ -756,10 +726,6 @@ bool CBotNet::PfBacktrack()
 
 	return false;
 }
-
-// =========================================================
-// TILE EDITOR — forbidden zones + custom finish tiles
-// =========================================================
 
 bool CBotNet::PfTileCanBeCustomFinish(int tx, int ty)
 {
@@ -1045,10 +1011,6 @@ void CBotNet::RenderPfTileEditor()
 	}
 }
 
-// =========================================================
-// PATH RENDERING
-// =========================================================
-
 void CBotNet::RenderPathfinderPath()
 {
 	{
@@ -1068,10 +1030,8 @@ void CBotNet::RenderPathfinderPath()
 	if(!pGame)
 		return;
 
-	const bool tasHasRun = GameClient()->m_Tas.HasRun(m_PfFullInputs);
-    const bool tasHasRun = false;
-	// CBotNet renders before the map renderer sets up the world projection —
-	// set it explicitly so the trajectory lands in world space.
+	// BestClient: m_Tas отсутствует — TAS не поддерживается
+	const bool tasHasRun = false;
 	Graphics()->MapScreenToInterface(pGame->m_Camera.m_Center.x, pGame->m_Camera.m_Center.y, pGame->m_Camera.m_Zoom);
 
 	Graphics()->TextureClear();
@@ -1080,8 +1040,6 @@ void CBotNet::RenderPathfinderPath()
 	float ConfigAlpha = KxLineAlpha(KX_LINE_PATHFINDER);
 	int LineSize = KxLineSize(KX_LINE_PATHFINDER);
 
-	// Only the start point exists — draw a small marker so the user sees the
-	// pathfinder is active but has not produced a chunk yet.
 	if(vPath.size() == 1)
 	{
 		Graphics()->QuadsBegin();
@@ -1096,7 +1054,6 @@ void CBotNet::RenderPathfinderPath()
 		return;
 	}
 
-	// Flow field arrows (vector arrows pointing toward the finish).
 	if(g_Config.m_KxPfShowField && m_PfFlowField && m_MapWidth > 0 && m_MapHeight > 0)
 	{
 		float halfTilesW = pGame->m_Camera.m_Zoom * (float)Graphics()->ScreenWidth() / 64.0f + 1.0f;
@@ -1117,8 +1074,6 @@ void CBotNet::RenderPathfinderPath()
 				if(fd >= 1e17f || fd == 0.0f)
 					continue;
 
-				// Gradient direction (360°). Unreachable neighbors are treated as
-				// equal so walls don't create a spurious away-from-wall component.
 				float fdx_m = (tx > 0) ? m_PfFlowField[ty * m_MapWidth + (tx - 1)] : fd;
 				float fdx_p = (tx < m_MapWidth - 1) ? m_PfFlowField[ty * m_MapWidth + (tx + 1)] : fd;
 				float fdy_m = (ty > 0) ? m_PfFlowField[(ty - 1) * m_MapWidth + tx] : fd;
@@ -1154,8 +1109,6 @@ void CBotNet::RenderPathfinderPath()
 		Graphics()->LinesEnd();
 	}
 
-	// Other branches (semi-transparent). Snapshot the segments under the
-	// data mutex — the worker appends to m_PfANodes while the search runs.
 	if(g_Config.m_KxPfShowBranches)
 	{
 		float HalfWidth = 0.5f + (float)(LineSize - 1) * 0.25f;
@@ -1218,7 +1171,6 @@ void CBotNet::RenderPathfinderPath()
 		}
 	}
 
-	// Hook segments (blue lines) captured per tick along the path.
 	if(g_Config.m_KxPfShowHooks && !vHookSegs.empty() && !tasHasRun)
 	{
 		float HalfWidth = 0.5f + (float)(LineSize - 1) * 0.25f;
@@ -1262,7 +1214,6 @@ void CBotNet::RenderPathfinderPath()
 		}
 	}
 
-	// Main path with optional speed gradient (rainbow hue sweep).
 	auto fnSpeedColor = [](float speed) -> ColorRGBA {
 		const float MAX_SPEED = 30.0f;
 		float t = std::clamp(speed / MAX_SPEED, 0.0f, 1.0f);
