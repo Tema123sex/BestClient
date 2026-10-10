@@ -153,8 +153,7 @@ void CBotNet::PfPasteToTas()
 	std::vector<std::pair<vec2, vec2>> vSegs;
 	for(const PfHookSeg &Seg : m_PfVHookSegs)
 		vSegs.emplace_back(Seg.teePos, Seg.hookPos);
-	GameClient()->m_Tas.PasteRun(m_PfFullInputs, m_PfVPath, vSegs);
-}
+	// BestClient: m_Tas отсутствует
 
 // =========================================================
 // FLOW FIELD + SCORE FIELD
@@ -1070,7 +1069,7 @@ void CBotNet::RenderPathfinderPath()
 		return;
 
 	const bool tasHasRun = GameClient()->m_Tas.HasRun(m_PfFullInputs);
-
+    const bool tasHasRun = false;
 	// CBotNet renders before the map renderer sets up the world projection —
 	// set it explicitly so the trajectory lands in world space.
 	Graphics()->MapScreenToInterface(pGame->m_Camera.m_Center.x, pGame->m_Camera.m_Center.y, pGame->m_Camera.m_Zoom);
